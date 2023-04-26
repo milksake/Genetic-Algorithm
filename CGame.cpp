@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 
 const struct Color Color::Black = { 0, 0, 0, 0 };
 const struct Color Color::White = { 1, 1, 1, 1 };
@@ -37,7 +38,7 @@ CGame::~CGame()
     cities = nullptr;
 }
 
-bool CGame::init(int windowW, int windowH)
+bool CGame::init(int windowW, int windowH, std::ofstream& archivo)
 {
     /* Config */
     int numCities, popSize, mutChance;
@@ -47,6 +48,10 @@ bool CGame::init(int windowW, int windowH)
     std::cin >> popSize;
     std::cout << "Enter mutation chance: ";
     std::cin >> mutChance;
+    
+    archivo << "number of cities: " << numCities << "\n";
+    archivo << "population size: " << popSize << "\n";
+    archivo << "mutation chance: " << mutChance << "\n";
 
     /* Initialize the library */
     if (!glfwInit())
@@ -83,8 +88,9 @@ bool CGame::init(int windowW, int windowH)
     return true;
 }
 
-void CGame::run()
+void CGame::run(std::ofstream& archivo)
 {
+    archivo << "Epoch,MinAptitud\n";
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -93,9 +99,11 @@ void CGame::run()
             frame_count = 0;
             current_frame++;
             update();
+            archivo << epoch << "," << cities->minAptitud << "\n";
         }
         frame_count++;
     }
+    archivo.close();
     glfwTerminate();
 }
 
@@ -269,8 +277,10 @@ void CGame::update()
 
     drawLineLoop(cities->getNodesFromPath(cities->bestPath), Color::Green);
 
-    if (process)
-        std::cout << cities->minAptitud << '\n';
+    if (process) {
+        std::cout << epoch << " - " << cities->minAptitud << '\n';
+        epoch++;
+    }
 
     endDrawing();
 }

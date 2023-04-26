@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "GeneticAlg.h"
 #include <vector>
+#include <fstream>
 
 struct Input
 {
@@ -28,11 +29,14 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 class CGame
 {
 	GLFWwindow* window;
+	GLFWwindow* freeWindow;
+	
 	int frame_time;
 	int frame_count;
 	int current_frame;
 	int wWidth, wHeight;
-	bool paused = true;
+	bool paused = false;
+	int epoch = 0;
 
 	// Draw
 	void beginDrawing();
@@ -55,13 +59,14 @@ class CGame
 	// Called every frame
 	void update();
 
+
 public:
 
 	CGame(int frameT = 0xE);
 	~CGame();
-	bool init(int windowW, int windowH);
+	bool init(int windowW, int windowH, std::ofstream& archivo);
 
-	void run();
+	void run(std::ofstream& archivo);
 
 	const int getHeight() const;
 	const int getWidth() const;
