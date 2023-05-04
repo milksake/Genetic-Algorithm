@@ -35,7 +35,7 @@ class CGame
 	int frame_count;
 	int current_frame;
 	int wWidth, wHeight;
-	bool paused = false;
+	bool paused = true;
 	int epoch = 0;
 
 	// Draw

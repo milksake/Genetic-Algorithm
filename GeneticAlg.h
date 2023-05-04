@@ -5,10 +5,10 @@
 class GeneticAlg
 {
 public:
-	GeneticAlg(const std::vector<Vector2> cities, int populationSize, float probMutation);
+	GeneticAlg(const std::vector<Vector2> cities, int populationSize, float probMutation, float probCross);
 
 	// Probabilidad de cruzamiento y mutación
-	float probMutation;
+	float probMutation, probCross;
 
 	// Vector de ciudades (posiciones en pixeles) 
 	const std::vector<Vector2> nodes;

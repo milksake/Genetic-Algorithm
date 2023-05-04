@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <numeric>
 
-GeneticAlg::GeneticAlg(const std::vector<Vector2> cities, int populationSize, float probMutation):
-	nodes(cities), probMutation(probMutation), bestPath(cities.size())
+GeneticAlg::GeneticAlg(const std::vector<Vector2> cities, int populationSize, float probMutation, float probCross):
+	nodes(cities), probMutation(probMutation), bestPath(cities.size()), probCross(probCross)
 {
 	for (int i = 0; i < bestPath.size(); i++)
 		bestPath[i] = i;
@@ -119,11 +119,18 @@ void GeneticAlg::update()
 		auto parent2 = selection();
 
 		// CROSSOVER
+		int chance = rand() % 100;
 		std::vector<int> child1, child2;
-		crossOver(parent1, parent2, child1, child2);
+		if (chance < probMutation)
+			crossOver(parent1, parent2, child1, child2);
+		else
+		{
+			child1 = parent1;
+			child2 = parent2;
+		}
 
 		// MUTATION
-		int chance = rand() % 100;
+		chance = rand() % 100;
 		if (chance < probMutation)
 			mutation(child1);
 		chance = rand() % 100;

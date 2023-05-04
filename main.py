@@ -8,8 +8,8 @@ y = []
 with open('datos.csv', 'r') as csvfile:
     plots = csv.reader(csvfile, delimiter=',')
     info = []
-    # Leer las primeras tres líneas
-    for i in range(3):
+    # Leer las primeras cuatro líneas
+    for i in range(4):
         line = next(plots)
         info.append(line[0]) # Agregar la línea al arreglo de info
     # Saltar la cuarta línea
@@ -24,6 +24,7 @@ plt.plot(x, y)
 plt.text(0.1, 0.9, info[0], transform=plt.gca().transAxes)
 plt.text(0.1, 0.85, info[1], transform=plt.gca().transAxes)
 plt.text(0.1, 0.8, info[2], transform=plt.gca().transAxes)
+plt.text(0.1, 0.75, info[3], transform=plt.gca().transAxes)
 plt.xlabel('Epoch')
 plt.ylabel('MinAptitud')
 plt.title('Traveling Salesman Problem using Genetic Algorithm')

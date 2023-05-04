@@ -41,18 +41,20 @@ CGame::~CGame()
 bool CGame::init(int windowW, int windowH, std::ofstream& archivo)
 {
     /* Config */
-    int numCities, popSize, mutChance;
+    int numCities, popSize, mutChance, crossChance;
     std::cout << "Enter number of cities: ";
     std::cin >> numCities;
     std::cout << "Enter population size: ";
     std::cin >> popSize;
     std::cout << "Enter mutation chance: ";
     std::cin >> mutChance;
+    std::cout << "Enter crossover chance: ";
+    std::cin >> crossChance;
     
-    archivo << "number of cities: " << numCities << "\n";
-    archivo << "population size: " << popSize << "\n";
-    archivo << "mutation chance: " << mutChance << "\n";
-
+    archivo << "Number of cities: " << numCities << "\n";
+    archivo << "Population size: " << popSize << "\n";
+    archivo << "Mutation chance: " << mutChance << "\n";
+    archivo << "Crossover chance: " << crossChance << "\n";
     /* Initialize the library */
     if (!glfwInit())
         return false;
@@ -60,7 +62,7 @@ bool CGame::init(int windowW, int windowH, std::ofstream& archivo)
     /* Create a windowed mode window and its OpenGL context */
     wWidth = windowW;
     wHeight = windowH;
-    window = glfwCreateWindow(windowW, windowH, "Checkers", NULL, NULL);
+    window = glfwCreateWindow(windowW, windowH, "TSP", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -83,7 +85,7 @@ bool CGame::init(int windowW, int windowH, std::ofstream& archivo)
     srand(time(0));
     auto c = createRandomCities(numCities);
 
-    cities = new GeneticAlg(c, popSize, mutChance);
+    cities = new GeneticAlg(c, popSize, mutChance, crossChance);
 
     return true;
 }
@@ -272,7 +274,7 @@ void CGame::update()
 
     for (auto& path : cities->population)
     {
-        drawLineLoop(cities->getNodesFromPath(path), Color::AlphaGrey);
+        drawLineLoop(cities->getNodesFromPath(path), {0.5f, 0.5f, 0.5f, 1.0f / cities->population.size()});
     }
 
     drawLineLoop(cities->getNodesFromPath(cities->bestPath), Color::Green);
